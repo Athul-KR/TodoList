@@ -19,7 +19,7 @@
                                 <div data-mdb-input-init class="form-outline mb-4">
                                     <input type="hidden" value="{{encrypt($todos->todo_id)}}" name="todo_id">
                                     <label class="form-label" for="form3Example1cg">Todo Title</label>
-                                    <input type="text" value="{{$todos->title}}" id="form3Example1cg" placeholder="Enter Todo Title" name="title" class="form-control form-control-lg" /> @error('title')
+                                    <input type="text" disabled value="{{$todos->title}}" id="form3Example1cg" placeholder="Enter Todo Title" name="title" class="form-control form-control-lg" /> @error('title')
                                     <p class=" text-danger form-group">{{ $message }}</p>
                                     @enderror
                                 </div>

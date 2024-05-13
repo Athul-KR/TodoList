@@ -105,28 +105,21 @@ class TodoController extends Controller
 
     public function exportTodos()
     {
-        $projectId = decrypt(request('projectId'));
-        $project = Project::findOrFail($projectId);
-
-        // Debugging: Check if project ID is decrypted correctly
-        // dd($projectId);
-
-        // Debugging: Check if the project exists
-        // dd($project);
-        $decryptedProjectId = encrypt($projectId);
-        $projects = Project::find($decryptedProjectId);
-        $tododetails = Todo::where([['project_id', '=', $decryptedProjectId], ['status', '=', 1]])->latest()->get();
+        $project = Project::findOrFail(decrypt(request('projectId')));
+        $tododetails = Todo::where('project_id', $project->id)->latest()->get();
+        $pending = Todo::where('project_id', $project->project_id)->where('status', 1)->get();
 
 
-        // Debugging: Check if todos are fetched correctly
-        // dd($todos);
 
         // Generate Markdown content
         $markdownContent = "# Project: " . $project->title . "\n\n";
-        $markdownContent = $markdownContent . "## Todos\n\n";
-
-        foreach ($tododetails as $todo) {
-            $markdownContent .= "- " . $todo->title . "\n";
+        $markdownContent .= "## Pending Todos\n\n";
+        foreach ($tododetails->where('status', 1) as $todo) {
+            $markdownContent .= "- [ ] " . $todo->title . "\n";
+        }
+        $markdownContent .= "\n## Completed Todos\n\n";
+        foreach ($tododetails->where('status', 0) as $todo) {
+            $markdownContent .= "- [x] " . $todo->title . "\n";
         }
 
         // Write Markdown content to a file

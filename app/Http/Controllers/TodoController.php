@@ -117,6 +117,7 @@ class TodoController extends Controller
 
         // Generate Markdown content
         $markdownContent = "# Project: \n\n" . $project->title . "\n\n";
+        $markdownContent .= "# Summary: \n\n" . $completed->count() . '/' . $pending->count() . 'todos completed' . "\n\n";
 
         $markdownContent .= "## Pending Todos\n\n";
         foreach ($pending->where('status', 1) as $todo) {

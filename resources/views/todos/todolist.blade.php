@@ -42,7 +42,7 @@
 
 
 </div>
-<table class="table gradient-custom-3 shadow-lg text-center" style="border-radius: 13px;">
+<table class="table gradient-custom-3 shadow-lg text-center justify-content-center" style="border-radius: 13px;">
     <tr>
         <th scope="col">Title</th>
         <th scope="col">Date</th>

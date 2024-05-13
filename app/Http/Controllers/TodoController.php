@@ -105,7 +105,7 @@ class TodoController extends Controller
 
     public function exportTodos()
     {
-        ////Export is not working correctly-- trying to fix  
+        ////Export is not working correctly-- trying to fix 
 
         $project = Project::findOrFail(decrypt(request('projectId')));
         $tododetails = Todo::where('project_id', $project->id)->latest()->get();

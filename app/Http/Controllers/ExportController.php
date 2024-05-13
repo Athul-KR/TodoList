@@ -12,17 +12,26 @@ class ExportController extends Controller
     ////Export is not working correctly-- trying to fix  
     public function exportTodos()
     {
+        ////Export is not working correctly-- trying to fix 
+
         $project = Project::findOrFail(decrypt(request('projectId')));
         $tododetails = Todo::where('project_id', $project->id)->latest()->get();
+        $pending = Todo::where('project_id', $project->project_id)->where('status', 1)->get();
+        $completed = Todo::where('project_id', $project->project_id)->where('status', 0)->get();
+
+
+
 
         // Generate Markdown content
-        $markdownContent = "# Project: " . $project->title . "\n\n";
+        $markdownContent = "# Project: \n\n" . $project->title . "\n\n";
+        $markdownContent .= "# Summary: \n\n" . $completed->count() . '/' . $pending->count() + $completed->count() . ' todos completed' . "\n\n";
+
         $markdownContent .= "## Pending Todos\n\n";
-        foreach ($tododetails->where('status', 1) as $todo) {
+        foreach ($pending as $todo) {
             $markdownContent .= "- [ ] " . $todo->title . "\n";
         }
         $markdownContent .= "\n## Completed Todos\n\n";
-        foreach ($tododetails->where('status', 0) as $todo) {
+        foreach ($completed as $todo) {
             $markdownContent .= "- [x] " . $todo->title . "\n";
         }
 
@@ -32,7 +41,6 @@ class ExportController extends Controller
 
         return response()->download(public_path('exports/' . $fileName))->deleteFileAfterSend(true);
     }
-
 
 
     // public function exportProjectsTodos()

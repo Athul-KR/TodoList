@@ -120,11 +120,11 @@ class TodoController extends Controller
         $markdownContent .= "# Summary: \n\n" . $completed->count() . '/' . $pending->count() + $completed->count() . ' todos completed' . "\n\n";
 
         $markdownContent .= "## Pending Todos\n\n";
-        foreach ($pending as $todo) {
+        foreach ($pending->where('status', 1) as $todo) {
             $markdownContent .= "- [ ] " . $todo->title . "\n";
         }
         $markdownContent .= "\n## Completed Todos\n\n";
-        foreach ($completed as $todo) {
+        foreach ($completed->where('status', 0) as $todo) {
             $markdownContent .= "- [x] " . $todo->title . "\n";
         }
 
